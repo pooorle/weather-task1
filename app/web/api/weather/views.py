@@ -1,7 +1,7 @@
 import logging
 
 import fastapi
-from fastapi import Header, HTTPException
+from fastapi import HTTPException, Request
 
 from app.services.weather import Weather
 from app.web.constants import X_TOKEN
@@ -28,8 +28,8 @@ async def get_weather(
     description="Get weather by the day",
 )
 async def get_weather_by_date(
-    day: str, pm_service: Weather = fastapi.Depends(), x_token: str = Header(None)
+    day: str, request: Request, pm_service: Weather = fastapi.Depends()
 ):
-    if x_token != X_TOKEN:
+    if request.headers.get("x_token") != X_TOKEN:
         raise HTTPException(status_code=401, detail="Unauthorized")
     return await pm_service.get_weather_by_day(day)

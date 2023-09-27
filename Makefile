@@ -23,6 +23,7 @@ service_install_poetry:
 
 service_install_req:
 	python3 -m venv .venv && \
+	source $(SERVICE_ENV_DIR)/bin/activate && \
 	pip3 install -r requirements.txt
 
 service_black:
